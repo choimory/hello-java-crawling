@@ -1,6 +1,7 @@
 package com.choimory.hellojavacrawling.jsoup.batch;
 
 import com.choimory.hellojavacrawling.common.batch.BugFixedRunIdIncrementer;
+import com.choimory.hellojavacrawling.common.webhook.slack.SlackDto;
 import com.choimory.hellojavacrawling.common.webhook.slack.SlackUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -19,6 +20,7 @@ public class JsoupCrawlingBatch {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     public static final String PREFIX = "JsoupCrawling";
+    private final SlackUtil slackUtil;
 
     @Bean(PREFIX + "Job")
     public Job jsoupCrawlJob(){
@@ -36,11 +38,16 @@ public class JsoupCrawlingBatch {
         return stepBuilderFactory.get(PREFIX + "CrawlStep")
                 .tasklet((contribution, chunkContext) -> {
                     /*do crawl*/
-                    boolean result = checkPriceTag(url, priceTag, Integer.parseInt(limitPrice));
+                    Integer priceNow = checkPriceNow(url, priceTag);
+                    int result = priceNow.compareTo(Integer.parseInt(limitPrice));
 
                     /*do slack*/
-                    if(result){
-                        SlackUtil.doSlack();
+                    if(result == 1){
+                        slackUtil.send(SlackDto.builder()
+                                .text("해당 상품의 가격이 목표가격 이하로 내려갔어요!\r\n" +
+                                        "목표가격 : " + limitPrice + "\r\n" +
+                                        "현재가격 : " + priceNow)
+                                .build());
                     }
 
                     return RepeatStatus.FINISHED;
@@ -48,7 +55,7 @@ public class JsoupCrawlingBatch {
                 .build();
     }
 
-    private boolean checkPriceTag(String url, String priceTag, int limitPrice){
-        return false;
+    private Integer checkPriceNow(String url, String priceTag){
+        return null;
     }
 }
