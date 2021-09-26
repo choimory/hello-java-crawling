@@ -1,0 +1,13 @@
+spring:
+  batch:
+    job:
+      names: ${job.name:NONE}
+
+crawling:
+  url:
+  price-tag:
+  limit-price:
+
+webhook:
+  slack:
+    url: https://hooks.slack.com/services/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
