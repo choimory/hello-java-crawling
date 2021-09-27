@@ -10,4 +10,10 @@ crawling:
 
 webhook:
   slack:
-    url: https://hooks.slack.com/services/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
+    url: ENC(6IKdXhavULX1zEiS98X6JrUsrBAum7OUv0pJe/7JvcoEj9KUsGGUH51LGSUSADTpXWweQlrBuu7SvK6G8CP2WM3ZVkqUuBo/gaIagMXvpBI2QJnaSDSXNoWRJwsS0wp7) #일반적으로 웹훅 URL은 노출되지 않게 환경변수를 이용하거나 암호화 라이브러리를 이용할것
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncrptor
+    key: choimory #일반적으로 암호화 라이브러리 key는 환경변수를 이용할것
+
