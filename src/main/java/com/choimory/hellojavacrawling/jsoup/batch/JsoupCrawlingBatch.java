@@ -44,6 +44,7 @@ public class JsoupCrawlingBatch {
                     /*do slack*/
                     if(result == 1){
                         slackUtil.send(SlackDto.builder()
+                                .username("Jsoup 크롤링 알람 봇")
                                 .text("해당 상품의 가격이 목표가격 이하로 내려갔어요!\r\n" +
                                         "목표가격 : " + limitPrice + "\r\n" +
                                         "현재가격 : " + priceNow)
